@@ -15,7 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
   die();
 }
 
-if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' ) ) {
+if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' )
+    && file_exists( dirname( __FILE__ ) . '/vendor/felixarntz/options-definitely/options-definitely.php' ) ) {
   require_once dirname( __FILE__ ) . '/vendor/autoload.php';
   require_once dirname( __FILE__ ) . '/vendor/felixarntz/options-definitely/options-definitely.php';
 }
