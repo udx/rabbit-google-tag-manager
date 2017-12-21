@@ -509,7 +509,7 @@ if ( ! class_exists( 'WPDLib\Components\Manager' ) ) {
 		 */
 		private static function determine_base() {
 			self::$base_dir = str_replace( '/inc/WPDLib/Components', '', wp_normalize_path( dirname( __FILE__ ) ) );
-			self::$base_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, self::$base_dir );
+			self::$base_url = str_replace( WP_CONTENT_DIR, site_url().'/wp-content', self::$base_dir );
 		}
 	}
 
