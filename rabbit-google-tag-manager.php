@@ -24,6 +24,9 @@ if ( file_exists( dirname( __FILE__ ) . '/vendor/autoload.php' )
 if ( !is_admin() ){
   add_action( 'wp_head', 'rtgm_render_head_snippet' );
   add_action( 'wp_footer', 'rtgm_render_body_snippet' );
+} else {
+  add_action( 'admin_head', 'rtgm_render_admin_head' );
+  add_action( 'admin_footer', 'rtgm_render_admin_footer' );
 }
 
 add_action( 'wpod', 'rtgm_settings_init' );
@@ -91,6 +94,36 @@ function rtgm_render_body_snippet() {
 }
 
 /**
+ * Render on backend if enabled
+ */
+function rtgm_render_admin_head() {
+  if ( !empty( $snippets = wpod_get_option('tags_manager', 'branch_tags') ) ) {
+
+    foreach( $snippets as $snippet ) {
+      if ( trim( $snippet['branch_name'] ) == rtgm_get_git_branch() && $snippet['backend'] == 1 ) {
+        echo "\n<!-- Rabbit Google Tags Start / ".$snippet['branch_name']." -->\n" . htmlspecialchars_decode( $snippet['header_tag'], ENT_QUOTES ) . "\n<!-- Rabbit Google Tags End -->\n\n";
+      }
+    }
+
+  }
+}
+
+/**
+ * Render on backend if enabled
+ */
+function rtgm_render_admin_footer() {
+  if ( !empty( $snippets = wpod_get_option('tags_manager', 'branch_tags') ) ) {
+
+    foreach( $snippets as $snippet ) {
+      if ( trim( $snippet['branch_name'] ) == rtgm_get_git_branch() && $snippet['backend'] == 1 ) {
+        echo "\n<!-- Rabbit Google Tags Start / ".$snippet['branch_name']." -->\n" . htmlspecialchars_decode( $snippet['body_tag'], ENT_QUOTES ) . "\n<!-- Rabbit Google Tags End -->\n\n";
+      }
+    }
+
+  }
+}
+
+/**
  * Init Settings
  * @param $wpod
  */
@@ -128,6 +161,10 @@ function rtgm_settings_init( $wpod ) {
                                                   'body_tag' => array(
                                                       'type' => 'textarea',
                                                       'title' => 'Body Tag'
+                                                  ),
+                                                  'backend' => array(
+                                                      'type' => 'checkbox',
+                                                      'title' => 'Enable on Backend'
                                                   )
                                               )
                                           )
